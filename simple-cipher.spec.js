@@ -17,14 +17,14 @@ describe('Random key cipher', () => {
     expect(cipher.key).toMatch(/^[a-z]+$/);
   });
 
-  xtest('has a key that is at least 100 characters long', () => {
+  test('has a key that is at least 100 characters long', () => {
     expect(cipher.key.length).toBeGreaterThanOrEqual(100);
   });
 
   // Here we take advantage of the fact that plaintext of "aaa..."
   // outputs the key. This is a critical problem with shift ciphers, some
   // characters will always output the key verbatim.
-  xtest('can encode', () => {
+  test('can encode', () => {
     expect(cipher.encode('aaaaaaaaaa')).toEqual(cipher.key.substr(0, 10));
   });
 
@@ -91,7 +91,7 @@ describe('Substitution cipher', () => {
     expect(cipher.decode('zabcdefghi')).toEqual('zzzzzzzzzz');
   });
 
-  xtest('can handle messages longer than the key', function() {
+  xtest('can handle messages longer than the key', function () {
     expect(new Cipher('abc').encode('iamapandabear'))
       .toEqual('iboaqcnecbfcr');
   });
