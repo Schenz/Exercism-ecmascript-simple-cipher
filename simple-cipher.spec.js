@@ -51,6 +51,18 @@ describe('Incorrect key cipher', () => {
     }).toThrow(new Error('Bad key'));
   });
 
+  test('throws an error with a space', () => {
+    expect(() => {
+      new Cipher('abc def');
+    }).toThrow(new Error('Bad key'));
+  });
+
+  test('throws an error with a punctuation', () => {
+    expect(() => {
+      new Cipher('abc!def');
+    }).toThrow(new Error('Bad key'));
+  });
+
   test('throws an error with an empty key', () => {
     expect(() => {
       new Cipher('');

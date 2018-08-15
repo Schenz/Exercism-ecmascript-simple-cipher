@@ -1,19 +1,15 @@
 class Cipher {
     constructor(key) {
-        if (!key && key !== '') {
-            this.key = makeKey(100);
-        } else if (hasUpperCase(key) || hasNumber(key) || key === '') {
+        if (isOnlyLowerCase(key) || key === '') {
             throw new Error('Bad key');
+        } else if (!key) {
+            this.key = makeKey(100);
         } else {
             this.key = key;
         }
 
-        function hasNumber(myString) {
-            return /\d/.test(myString);
-        };
-
-        function hasUpperCase(str) {
-            return str.toLowerCase() != str;
+        function isOnlyLowerCase(str) {
+            return /[^(a-z)]/.test(str);
         };
 
         function makeKey(keySize) {
@@ -28,22 +24,25 @@ class Cipher {
         }
     }
 
+    encodeOrDecode(text, decode) {
+        let self = this;
+
+        return text
+            .replace(/[^a-z]/g, '')
+            .replace(/[a-z]/g, (letter, index) => {
+                let charCode = letter.charCodeAt(0) - 97;
+                let offSet = self.key[index % self.key.length].charCodeAt(0) - 97;
+                let calculatedOffSet = decode ? 26 - offSet : offSet;
+                return String.fromCharCode(((charCode + calculatedOffSet) % 26 + 97));
+            });
+    }
+
     encode(text) {
-        let self, i;
-
-        self = this;
-        i = 0;
-
-        return text.replace(/[^a-z]/g, '').replace(/[a-z]/g, letter => String.fromCharCode((((letter.charCodeAt(0) - 97) + ((self.key[i++ % self.key.length].charCodeAt(0) - 97))) % 26 + 97)));
+        return this.encodeOrDecode(text, false);
     }
 
     decode(text) {
-        let self, i;
-
-        self = this;
-        i = 0;
-
-        return text.replace(/[^a-z]/g, '').replace(/[a-z]/g, letter => String.fromCharCode((((letter.charCodeAt(0) - 97) + (26 - (self.key[i++ % self.key.length].charCodeAt(0) - 97))) % 26 + 97)));
+        return this.encodeOrDecode(text, true);
     }
 }
 
