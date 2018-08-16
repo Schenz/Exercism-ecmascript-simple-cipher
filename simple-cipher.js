@@ -7,21 +7,6 @@ class Cipher {
         } else {
             this.key = key;
         }
-
-        function isOnlyLowerCase(str) {
-            return /[^(a-z)]/.test(str);
-        };
-
-        function makeKey(keySize) {
-            let text = "";
-            const possible = "abcdefghijklmnopqrstuvwxyz";
-
-            for (let index = 0; index < keySize; index += 1) {
-                text += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-
-            return text;
-        }
     }
 
     encodeOrDecode(text, decode) {
@@ -44,6 +29,21 @@ class Cipher {
     decode(text) {
         return this.encodeOrDecode(text, true);
     }
+}
+
+function isOnlyLowerCase(str) {
+    return /[^(a-z)]/.test(str);
+};
+
+function makeKey(keySize) {
+    let text = "";
+    const possible = "abcdefghijklmnopqrstuvwxyz";
+
+    for (let index = 0; index < keySize; index += 1) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return text;
 }
 
 export default Cipher;
