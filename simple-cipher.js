@@ -9,26 +9,24 @@ class Cipher {
         }
     }
 
-    encodeOrDecode(text, decode) {
-        let self = this;
-
-        return text
-            .replace(/[^a-z]/g, '')
-            .replace(/[a-z]/g, (letter, index) => {
-                let charCode = letter.charCodeAt(0) - 97;
-                let offSet = self.key[index % self.key.length].charCodeAt(0) - 97;
-                let calculatedOffSet = decode ? 26 - offSet : offSet;
-                return String.fromCharCode(((charCode + calculatedOffSet) % 26 + 97));
-            });
-    }
-
     encode(text) {
-        return this.encodeOrDecode(text, false);
+        return encodeOrDecode(text, false, this.key);
     }
 
     decode(text) {
-        return this.encodeOrDecode(text, true);
+        return encodeOrDecode(text, true, this.key);
     }
+}
+
+function encodeOrDecode(text, decode, key) {
+    return text
+        .replace(/[^a-z]/g, '')
+        .replace(/[a-z]/g, (letter, index) => {
+            let charCode = letter.charCodeAt(0) - 97;
+            let offSet = key[index % key.length].charCodeAt(0) - 97;
+            let calculatedOffSet = decode ? 26 - offSet : offSet;
+            return String.fromCharCode(((charCode + calculatedOffSet) % 26 + 97));
+        });
 }
 
 function isOnlyLowerCase(str) {
